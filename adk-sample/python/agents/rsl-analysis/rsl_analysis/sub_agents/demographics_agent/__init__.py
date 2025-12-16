@@ -14,4 +14,4 @@
 
 """Execution_analyst_agent for finding the ideal execution strategy"""
 
-from .agent import demographics_agent  # noqa: F401
+from .agent import demographics_analyst_agent  # noqa: F401

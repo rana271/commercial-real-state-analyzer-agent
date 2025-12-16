@@ -18,9 +18,9 @@ def get_demographics(location: str) -> str:
         data = {"error": f"Demographic data for {location} not available."}
     return json.dumps(data)
 
-DemographicsAgent = LlmAgent(
+demographics_analyst_agent = LlmAgent(
     model="gemini-2.0-flash",
-    name="DemographicsAgent",
+    name="demographics_analyst_agent",
     description="An expert for retrieving, analyzing, and summarizing detailed demographic data, population figures, and income statistics for specific locations.",
     instruction="""
         You are the Demographics Specialist. Use the 'get_demographics' tool to find the required

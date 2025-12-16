@@ -14,4 +14,4 @@
 
 """data_analyst_agent for finding information using google search"""
 
-from .agent import property_agent  # noqa: F401
+from .agent import property_analyst_agent  # noqa: F401

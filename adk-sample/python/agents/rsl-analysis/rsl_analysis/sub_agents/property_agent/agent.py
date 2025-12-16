@@ -1,30 +1,30 @@
-# sub_agents/property_agent.py
-from google.adk.agents import LlmAgent
-import json
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-def get_property_data(property_address: str) -> str:
-    """
-    Retrieves the full details (price, beds, baths) for a specific property address.
-    
-    Args:
-        property_address: The address (e.g., '123 Main St') of the property.
-        
-    Returns:
-        A JSON string containing property details.
-    """
-    if "123 main st" in property_address.lower():
-        data = {"address": "123 Main St, Anytown", "price": 550000, "beds": 3, "baths": 2, "sqft": 1800}
-    else:
-        data = {"error": f"Property details for {property_address} not found in the database."}
-    return json.dumps(data)
+"""data_analyst_agent for finding information using google search"""
 
-PropertyDetailsAgent = LlmAgent(
-    model="gemini-2.0-flash",
-    name="PropertyDetailsAgent",
-    description="An expert agent for fetching specific details, prices, and features of a known property.",
-    instruction="""
-        You are the Property Details Specialist. Your task is to use the 'get_property_data' tool
-        to retrieve and summarize information about a property based on its address.
-    """,
-    tools=[get_property_data]
+from google.adk import Agent
+from google.adk.tools import google_search
+
+from . import prompt
+
+MODEL = "gemini-2.5-pro"
+
+property_analyst_agent = Agent(
+    model=MODEL,
+    name="property_analyst_agent",
+    instruction=prompt.PROPERTY_ANALYST_PROMPT,
+    output_key="market_data_analysis_output",
+    tools=[google_search],
 )

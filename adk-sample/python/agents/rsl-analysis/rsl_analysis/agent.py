@@ -18,16 +18,18 @@ from google.adk.agents import LlmAgent
 from google.adk.tools.agent_tool import AgentTool
 
 from . import prompt
-from .sub_agents.property_agent import get_property_data
-from .sub_agents.demographics_agent import get_demographics
+# import rsl_analysis.sub_agents.get_property_data
+from .sub_agents.demographics_agent import demographics_analyst_agent
+from .sub_agents.property_agent import property_analyst_agent
 from .sub_agents.risk_analyst import risk_analyst_agent
-from .sub_agents.trading_analyst import trading_analyst_agent
+from .sub_agents.trading_analyst import trends_analyst_agent
+
 
 MODEL = "gemini-2.0-flash"
 
 
-financial_coordinator = LlmAgent(
-    name="financial_coordinator",
+propertyloan_coordinator = LlmAgent(
+    name="propertyloan_coordinator",
     model=MODEL,
     description=(
         "guide users through a structured process to receive financial "
@@ -46,13 +48,17 @@ financial_coordinator = LlmAgent(
         5. **Synthesis:** If a query requires combining multiple pieces of information, delegate to the first relevant agent and then synthesize the final answer yourself.
     """,
 
-    output_key="financial_coordinator_output",
+  
     tools=[
-        AgentTool(agent=get_property_data),
-        AgentTool(agent=trading_analyst_agent),
-        AgentTool(agent=get_demographics),
+       
+       
+        AgentTool(agent=property_analyst_agent),
         AgentTool(agent=risk_analyst_agent),
+        AgentTool(agent=trends_analyst_agent),
+        AgentTool(agent=demographics_analyst_agent),
+        
+        
     ],
 )
 
-root_agent = rsl_analysis
+root_agent = propertyloan_coordinator
